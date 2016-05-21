@@ -1,98 +1,90 @@
 package mazeGenerator;
 
+import maze.Cell;
 import maze.Maze;
+import maze.Wall;
 
 public class MazeUtilities {
 	
-    /** Represents UP. */
-    public static final int UP    = 0;
-
-    /** Represents RIGHT. */
-    public static final int RIGHT = 1;
-
-    /** Represents DOWN. */
-    public static final int DOWN  = 2;
-
-    /** Represents LEFT. */
-    public static final int LEFT  = 3;
-
-    private int width;
-    private int height;
-    // Stores whether the walls exist or not
-
-    private boolean[] horizWalls;
-    private boolean[] vertWalls;
+    protected int width;
+    protected int height;
+    protected Maze maze;
+    // Stores visited cells
+    boolean[][] visitedCells; 
+    public final static int EAST = 0;
+	public final static int NORTHEAST = 1;
+	public final static int NORTHWEST = 2;
+	public final static int NORTH = 2;
+	public final static int WEST = 3;
+	public final static int SOUTHWEST = 4;
+	public final static int SOUTHEAST = 5;
+	public final static int SOUTH = 5;
+	public final static int NUM_DIR = 6;
+	
     
-
-	public void generateMaze(Maze maze) {
-		width = maze.sizeC;
-	    height = maze.sizeR;
-	    horizWalls = new boolean[width * (height + 1)];
-	    vertWalls  = new boolean[(width + 1) * height];
+    
+	public void initMaze(Maze maze) {
+		this.width = maze.sizeC;
+	    this.height = maze.sizeR;
+	    this.maze = maze;
+	    this.visitedCells = new boolean[width][height];  
 	}
 	
-	protected boolean carve(int x, int y, int direction, Maze maze) {
-		// Check the arguments
+	
+	public Cell draw(Cell currentCell, int direction) {
+		Cell newCell = new Cell(currentCell.r, currentCell.c);
 
-
-		checkDirection(direction);
-		checkLocation(x, y);
-
-		int index = -1;
-		boolean[] array = null;
-
-		switch (direction) {
-			case UP:
-				index = y*width + x;
-				array = horizWalls;
-				break;
-			case DOWN:
-				index = (y + 1)*width + x;
-				array = horizWalls;
-				break;
-			case LEFT:
-				index = y*(width + 1) + x;
-				array = vertWalls;
-				break;
-			case RIGHT:
-				index = y*(width + 1) + (x + 1);
-				array = vertWalls;
-				break;
+		this.maze.map[currentCell.r][currentCell.c].wall[direction].present = false;
+		switch(direction) {
+		  case NORTH:
+//          	System.out.println("draw =  UP");
+			  newCell = new Cell(currentCell.r + 1, currentCell.c);
+            break;
+		  case EAST:
+//          	System.out.println("draw =  RIGHT");
+			  newCell = new Cell(currentCell.r, currentCell.c + 1);
+            break;
+		  case SOUTH:
+//          	System.out.println("draw =  DOWN");
+			  newCell = new Cell(currentCell.r - 1, currentCell.c);
+            break;
+		  case WEST:
+//          	System.out.println("draw =  LEFT");
+			  newCell = new Cell(currentCell.r, currentCell.c - 1);
+            break;
 		}
-
-		// Set the wall to 'false' and return what it was before
-
-		boolean b = array[index];
-		array[index] = false;
-		return b;
+		
+		return newCell;
+		
 	}
 	
+	public boolean unvisitedCell(int r,int c) {
+		boolean valid = false;
+		boolean isWithinBoundary = checkBoundary(r, c);
+		boolean isVisited = true;
+
+//		if( r >= 0 && r < this.visitedCells.length  && 
+//				c >= 0 && c < this.visitedCells[r].length) {
+//			isVisited = this.visitedCells[r][c];
+//		};
+		isVisited = this.maze.map[r][c].visited;
+		
+		if (!isVisited && isWithinBoundary) {
+			valid = true;
+		}
+		return valid;
+	}
 	
-	  private static void checkDirection(int direction) {
-	        switch (direction) {
-	            case UP:
-	            case RIGHT:
-	            case DOWN:
-	            case LEFT:
-	                break;
-	            default:
-	                throw new IllegalArgumentException("Bad direction: " + direction);
-	        }
-	    }
-	  
-	    /**
-	     * Checks that the given cell location is valid.
-	     *
-	     * @param x the cell's X-coordinate
-	     * @param y the cell's Y-coordinate
-	     * @throws IndexOutOfBoundsException if the coordinate is out of range.
-	     */
-	    protected void checkLocation(int x, int y) {
-	        if (x < 0 || width <= x) {
-	            throw new IndexOutOfBoundsException("X out of range: " + x);
-	        }
-	        if (y < 0 || height <= y) {
-	            throw new IndexOutOfBoundsException("Y out of range: " + y);
-	        }
-	    }
+	/**
+	 * Checks if cell is within boundaries
+	 * @param cell
+	 */
+	public boolean checkBoundary(int r,int c) {
+		if (r >= 0 && r < width && 
+				c >= 0 && c < height) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

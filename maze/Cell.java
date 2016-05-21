@@ -34,6 +34,9 @@ public class Cell {
 	 */
 	public Cell tunnelTo = null;
 	
+	// Visited status
+	public boolean visited = false;
+	
 	/**
 	 * construct cell of position (r, c) in the maze
 	 * @param r	Row coordinate in the maze

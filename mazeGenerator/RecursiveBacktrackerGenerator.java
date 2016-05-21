@@ -7,91 +7,88 @@ import maze.Cell;
 import maze.Maze;
 
 public class RecursiveBacktrackerGenerator extends MazeUtilities implements MazeGenerator {
-
+	
+//	int cellSideCount = 4;
+	
+	
 	@Override
 	public void generateMaze(Maze maze) {
-		super.generateMaze(maze);
+		super.initMaze(maze);
 		// TODO Auto-generated method stub
-		int width = maze.sizeC;
-        int height = maze.sizeR;
+		this.width = maze.sizeC;
+        this.height = maze.sizeR;
         Random rand;
-
         
-        // Stores visited cells
-        boolean[] visitedCells = new boolean[width * height];  
-        LinkedList<Cell> stack = new LinkedList<Cell>();
+        LinkedList<Cell> pathStack = new LinkedList<Cell>();
 
-        Cell cell = new Cell(maze.entrance.c, maze.entrance.r );
-        stack.addFirst(cell);
-        int[] neighbours = new int[4];
-
+        Cell currentCell = new Cell(maze.entrance.r, maze.entrance.c );
+        pathStack.addFirst(currentCell);
+        int[] neighbourCells = new int[NUM_DIR];
+        
         do {
+//        	System.out.println(currentCell.r + " > " + currentCell.c);
             // Mark the current cell as visited
+        	this.maze.map[currentCell.r][currentCell.c].visited = true;
 
-            cells[cell.c*width + cell.r] = true;
-
-            // Examine the current cell's neighbours
-
+            // Check cell for free neighbours
             int freeNeighbourCount = 0;
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < NUM_DIR; i++) {
+            	neighbourCells[i] = -1;
                 switch (i) {
-                    case UP:
-                        if (cell.r > 0 && !cells[(cell.r - 1)*width + cell.c]) {
-                            neighbours[freeNeighbourCount++] = i;
+                    case NORTH:
+                    	// check if it can move up
+                        if (currentCell.r < height-1 && unvisitedCell(currentCell.r + 1, currentCell.c)) {
+                        	neighbourCells[i] = i;
+                        	freeNeighbourCount++;
+//                          	System.out.println("unvisited =  UP");
                         }
                         break;
-                    case RIGHT:
-                        if (cell.c < width - 1 && !cells[cell.r*width + (cell.c + 1)]) {
-                            neighbours[freeNeighbourCount++] = i;
+                    case EAST:
+                        if (currentCell.c < width - 1 && unvisitedCell(currentCell.r, currentCell.c + 1)) {
+                        	neighbourCells[i] = i;
+                        	freeNeighbourCount++;
+//                          	System.out.println("unvisited =  RIGHT");
                         }
                         break;
-                    case DOWN:
-                        if (cell.r < height - 1 && !cells[(cell.r + 1)*width + cell.c]) {
-                            neighbours[freeNeighbourCount++] = i;
+                    case SOUTH:
+                        if (currentCell.r > 0 && unvisitedCell(currentCell.r - 1, currentCell.c)) {
+                        	neighbourCells[i] = i;
+                        	freeNeighbourCount++;
+//                          	System.out.println("unvisited =  DOWN");
                         }
                         break;
-                    case LEFT:
-                        if (cell.c > 0 && !cells[cell.r*width + (cell.c - 1)]) {
-                            neighbours[freeNeighbourCount++] = i;
+                    case WEST:
+                        if (currentCell.c > 0 && unvisitedCell(currentCell.r, currentCell.c - 1)) {
+                        	neighbourCells[i] = i;
+                        	freeNeighbourCount++;
+//                          	System.out.println("unvisited =  LEFT");
                         }
                         break;
                 }
             }
 
             // Pick a random free neighbour
-
             if (freeNeighbourCount > 0) {
-                stack.addFirst(cell);
-                cell = new Cell(cell.c, cell.r);
-                int randomNum = (int) Math.floor(Math.random() * ( 3-0 ));
-
-                switch (randomNum) {
-                    case UP:
-                        carve(cell.c, cell.r, UP, maze);
-                        cell.r--;
-                        break;
-                    case RIGHT:
-                        carve(cell.c, cell.r, RIGHT, maze);
-                        cell.c++;
-                        break;
-                    case DOWN:
-                        carve(cell.c, cell.r, DOWN, maze);
-                        cell.r++;
-                        break;
-                    case LEFT:
-                        carve(cell.c, cell.r, LEFT, maze);
-                        cell.c--;
-                        break;
-                }
-
-                //System.out.println(cell);
-                //print(System.out);
-                //System.out.println();
+            	boolean choseRandomFreeCell = false;
+            	int randomNum;
+            	// randomly select a valid direction - valid nums are greater than 0
+            	do {
+                  randomNum = (int) Math.round(Math.random() * ( (NUM_DIR-1)-0 ));
+                  if (neighbourCells[randomNum] >= 0) {
+                	  choseRandomFreeCell = true;
+                  }
+                  
+            	} while (!choseRandomFreeCell);
+                Cell newCell = draw(currentCell, randomNum);
+                currentCell = newCell;
+                pathStack.addFirst(currentCell);
+            	
             } else {
-                cell = stack.removeFirst();
+            	currentCell = pathStack.removeFirst();
             }
-        } while (!stack.isEmpty());
 
+        } while (!pathStack.isEmpty());
+        System.out.println("Stack empty");
 	} // end of generateMaze()
 
 } // end of class RecursiveBacktrackerGenerator
