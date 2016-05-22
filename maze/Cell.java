@@ -34,7 +34,10 @@ public class Cell {
 	 */
 	public Cell tunnelTo = null;
 	
-	// Visited status
+	/**
+	 * @student_code
+	 * Visited status of the cell
+	 */
 	public boolean visited = false;
 	
 	/**
