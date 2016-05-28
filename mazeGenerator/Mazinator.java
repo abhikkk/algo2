@@ -1,16 +1,17 @@
 package mazeGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import maze.Cell;
 import maze.Maze;
 import maze.Wall;
 
-public class MazeUtilities {
+public class Mazinator {
 
 	protected int width;
 	protected int height;
 	protected Maze maze;
-	// Stores visited cells
-	boolean[][] visitedCells;
 	public final static int EAST = 0;
 	public final static int NORTHEAST = 1;
 	public final static int NORTHWEST = 2;
@@ -19,16 +20,17 @@ public class MazeUtilities {
 	public final static int SOUTHWEST = 4;
 	public final static int SOUTHEAST = 5;
 	public final static int SOUTH = 5;
-
-	public MazeUtilities() {
-
-	}
+	
+	protected int visitedCellCount;
+	protected List<Cell> visitedList = new ArrayList<Cell>();
+	protected int cellTotal;
 
 	public void initMaze(Maze maze) {
 		this.width = maze.sizeC;
 		this.height = maze.sizeR;
 		this.maze = maze;
-		this.visitedCells = new boolean[width][height];
+		this.visitedCellCount = 0;
+		this.cellTotal = this.height * this.width;
 	}
 
 	/**
@@ -169,4 +171,52 @@ public class MazeUtilities {
 		}
 		return isInside;
 	}
+	
+	/**
+	 * Sets cell to visited status and increments total count
+	 * @param Cell currentCell
+	 */
+	protected void visitCell(Cell currentCell) {
+		if(currentCell.visited == false) {
+			currentCell.visited = true;
+			this.visitedCellCount++;
+			this.visitedList.add(currentCell);
+		}
+	}
+	
+	/**
+	 * Select a random cell from the maze
+	 * @return Cell
+	 */
+	protected Cell selectRandomCell() {
+		Cell newcell;
+		int rIndex = (int) Math.round(Math.random() * ((this.height - 1) - 0));
+		int cIndex;
+		if(this.maze.type == maze.HEX) {
+			int cMax = (int) (width - 1 + Math.ceil((double)rIndex/2));
+			int cMin = (int) Math.ceil((double)rIndex/2);
+			cIndex = (int) Math.round(Math.random() * (cMax - cMin) + cMin);
+		} else {
+			cIndex = (int) Math.round(Math.random() * ((this.width - 1) - 0));
+		}
+		newcell = this.maze.map[rIndex][cIndex];
+		return newcell;
+	}
+	
+	
+	protected boolean hasUnvisitedNeighbours(Cell currentCell) {
+		Cell[] neighbours = currentCell.neigh;
+		int neighbourLength = neighbours.length;
+		boolean validNeighbours = false;
+
+		for (int i = 0; i < neighbourLength; i++) {
+			if (neighbours[i] != null && neighbours[i].visited == false) {
+				validNeighbours = true;
+				break;
+			}
+		}
+		
+		return validNeighbours;
+	}
+
 }
