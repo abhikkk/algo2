@@ -76,7 +76,6 @@ public class RecursiveBacktrackerGenerator extends Mazinator implements MazeGene
 				if(hasTunnel && currentCell.tunnelTo.visited == false) {
 						neighbour = currentCell.tunnelTo;
 						visitCell(neighbour);
-						System.out.println("just tunnelled");
 				} else {
 					do{
 						// choose a random direction
@@ -106,6 +105,7 @@ public class RecursiveBacktrackerGenerator extends Mazinator implements MazeGene
 	 * ------------------------------------------------------------------
 	 * Sets cell as visited and adds to path stack
 	 * 
+	 * @param currentCell Cell to visit
 	 */
 	protected void visitCell(Cell currentCell) {
 		super.visitCell(currentCell);
@@ -114,7 +114,7 @@ public class RecursiveBacktrackerGenerator extends Mazinator implements MazeGene
 
 	/**
 	 * #if (total visted == cell count total)
-	 * 	return true
+	 * 	#return true
 	 * #end if
 	 * 
 	 * ------------------------------------------------------------------

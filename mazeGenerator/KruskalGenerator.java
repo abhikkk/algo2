@@ -45,7 +45,7 @@ public class KruskalGenerator extends Mazinator implements MazeGenerator {
 
 	/**
 	 * #if (total visited == cell count total && cellSet size == 1)
-	 * 	return true
+	 * 	#return true
 	 * #end if
 	 * 
 	 * ------------------------------------------------------------------
@@ -76,6 +76,7 @@ public class KruskalGenerator extends Mazinator implements MazeGenerator {
 	 * 		visitCell()
 	 * 		add neighbour's set items to current set
 	 * 		remove neighbour's set from all sets
+	 * 		#return true
 	 * 	#end if
 	 * #end doWhile
 	 * ------------------------------------------------------------------
@@ -182,16 +183,16 @@ public class KruskalGenerator extends Mazinator implements MazeGenerator {
 	/**
 	 * 
 	 * #if (set contains cell)
-	 * 	return true
+	 * 	#return true
 	 * #end if
 	 * 
 	 * ------------------------------------------------------------------
 	 * Checks if the cell is in the set
 	 * @param newCell Cell to match
 	 * @param currentSet Set to match
-	 * @return
+	 * @return Boolean
 	 */
-	private boolean isInCurrentSet(Cell newCell, List<Cell> currentSet) {
+	private Boolean isInCurrentSet(Cell newCell, List<Cell> currentSet) {
 		boolean inSet = false;
 		
 		if(currentSet.contains(newCell)) {
@@ -217,7 +218,7 @@ public class KruskalGenerator extends Mazinator implements MazeGenerator {
 	 * Search for set containing cell or make new one
 	 * 
 	 * @param newCell
-	 * @return
+	 * @return ArrayList<Cell>
 	 */
 	private ArrayList<Cell> getOrMakeCellSet(Cell newCell) {
 		ArrayList<Cell> matchingSet = getCellSet(newCell);
@@ -236,7 +237,7 @@ public class KruskalGenerator extends Mazinator implements MazeGenerator {
 	 * 
 	 * #loop (list of all sets)
 	 * 	#if (list contains newCell)
-	 * 		return match
+	 * 		#return match
 	 * 	#end if
 	 * #end loop
 	 * 
