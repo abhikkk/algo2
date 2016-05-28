@@ -118,7 +118,7 @@ public class RecursiveBacktrackerGenerator extends Mazinator implements MazeGene
 	 * #end if
 	 * 
 	 * ------------------------------------------------------------------
-	 * Sets cell as visited and adds to path stack
+	 * Checks if maze generation is complete
 	 * 
 	 */
 	private Boolean isInComplete() {
