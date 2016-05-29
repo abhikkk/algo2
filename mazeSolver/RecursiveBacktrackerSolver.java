@@ -9,7 +9,7 @@ import maze.*;
 /**
  * Implements the recursive backtracking maze solving algorithm.
  */
-public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver {
+public class RecursiveBacktrackerSolver extends SupportSolver implements MazeSolver {
 	
 		boolean visited[][];
 		Cell map[][];
