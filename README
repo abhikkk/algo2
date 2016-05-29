@@ -1,5 +1,7 @@
-To compile on server:
-javac -cp .:mazeSolver/SampleSolver.jar *.java
+We have created 2 new Java files which contains methods for Generation and Solver.
+Mazinator has been added to the package MazeGenerator.
+Solvinator has been added to the package MazeSolver.
 
-To run on server:
-java -cp .:mazeSolver/SampleSolver.jar MazeTester inputFilename n
+
+RecursiveBacktrackerSolver causes error in tunnel conditions.
+BiDir solver works only in 1 direction.
