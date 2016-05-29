@@ -45,6 +45,16 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 		boolean isSolved = false;
 		int cellsExplored = 0; 
 		
+		
+		/**
+		 * SolveMaze()
+		 * Check maze type
+		 * Case : Mazetype
+		 * calls specific maze solver
+		 * break
+		 */
+		
+		
 		@Override
 		public void solveMaze(Maze maze) {
 

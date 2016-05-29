@@ -5,6 +5,13 @@ import maze.*;
 import maze.Maze;
 
 //Support class for Solving maze
+/**
+ * getAllDirs()
+ * getAllHexDir()
+ * randomiser()
+ * getRandomDir()
+ *
+ */
 public class Solvinator {
 
 	
