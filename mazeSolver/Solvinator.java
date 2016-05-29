@@ -4,20 +4,21 @@ import maze.*;
 
 import maze.Maze;
 
+//Support class for Solving maze
 public class Solvinator {
 
 	
-		protected int sizeCol;
-		protected int sizeRow;
+		protected int sizeC;
+		protected int sizeR;
 		protected Maze myMaze;
 		protected int visitedCellsCount;
 		protected List<Cell> visitedCells = new ArrayList<Cell>();
 		protected int totalCells;
 		HashMap<String,Boolean> mapCell = new HashMap<String,Boolean>();
 		
-		public void initMaze(Maze maze){
-			this.sizeRow = maze.sizeR;
-			this.sizeCol = maze.sizeC;
+		public void InitialMaze(Maze maze){
+			this.sizeR = maze.sizeR;
+			this.sizeC = maze.sizeC;
 			}
 		public ArrayList<Integer> getAllDirs() {
 			ArrayList<Integer> directions = new ArrayList<Integer>();
@@ -40,39 +41,42 @@ public class Solvinator {
 			} //end of getAllHexDir()
 
 			
-			
-			public int randNumber(int min, int max){
-				int toReturn = 0;
+			// Method to get a Random Number
+			public int randomiser(int min, int max){
+				int Return = 0;
 				Random rand = new Random();
-				toReturn = min + rand.nextInt((max - min) + 1);
-				return toReturn;
-			} // end of randNumber()
-			public int getRandDirs(){
-				int randNumber = randNumber(1, 4);
-				int toReturn = 0;
-				switch (randNumber) {
+				Return = min + rand.nextInt((max - min) + 1);
+				return Return;
+			} // end of randomiser()
+			
+			
+			// Method to get a Random Direction
+			public int getRandomDir(){
+				int randomiser = randomiser(1, 4);
+				int Return = 0;
+				switch (randomiser) {
 				case 1:
-					toReturn = Maze.EAST;
+					Return = Maze.EAST;
 					break;
 				case 2:
-					toReturn = Maze.NORTH;		
+					Return = Maze.NORTH;		
 					break;
 				case 3:
-					toReturn = Maze.WEST;
+					Return = Maze.WEST;
 					break;
 				case 4:
-					toReturn = Maze.SOUTH;
+					Return = Maze.SOUTH;
 					break;
 				default:
-					System.out.println("Warning : Default called!!");
+					System.out.println("Unknown Direction!");
 					break;
 				}
-				return toReturn;
-			} // end of getRandDirs()
+				return Return;
+			} // end of getRandomDir()
 			
-			public Integer getRandArray(Integer a[]){
-				return a[randNumber(1, a.length)-1];
-			} // end of getRandArray()
+			public Integer getRandomArray(Integer a[]){
+				return a[randomiser(1, a.length)-1];
+			} // end of getRandomArray()
 	}
 
 

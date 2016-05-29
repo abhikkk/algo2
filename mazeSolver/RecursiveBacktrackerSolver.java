@@ -1,10 +1,6 @@
 package mazeSolver;
-
-import maze.Maze;
-import java.util.ArrayList;
-import java.util.Random;
-
 import maze.*;
+import java.util.ArrayList;
 
 /**
  * Implements the recursive backtracking maze solving algorithm.
@@ -12,7 +8,7 @@ import maze.*;
 public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver {
 	
 		boolean visited[][];
-		Cell map[][];
+		Cell Map[][];
 		Maze maze;
 		boolean isSolved = false;
 		int cellsExplored = 0;
@@ -21,23 +17,22 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 		public void solveMaze(Maze maze) {
 
 			this.maze = maze;
-			map = maze.map;
-			// pickup first random cell;
-			Cell initCell ;
+			Map = maze.map;
+			Cell InitialCell ; // Chooses an initial cell 
 			switch (maze.type) {
 			case Maze.NORMAL:
 				visited = new boolean[maze.sizeR][maze.sizeC];
-				makeRectWay(maze.entrance);
+				RectangleSolver(maze.entrance);
 				break;
 			case Maze.TUNNEL:
 				visited = new boolean[maze.sizeR][maze.sizeC];
-				initCell = map[randNumber(0, maze.sizeR - 1)][randNumber(
+				InitialCell = Map[randomiser(0, maze.sizeR - 1)][randomiser(
 						0, maze.sizeC - 1)];
-				makeTunnelWay(initCell);
+				TunnelSolver(InitialCell);
 				break;
 			case Maze.HEX:
 				visited = new boolean[maze.sizeR][(maze.sizeR+1)/2 + maze.sizeC];
-				makeHexWay(maze.entrance);
+				HexSolver(maze.entrance);
 				break;
 			default:
 				break;
@@ -45,7 +40,7 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 		} // end of solveMaze()
 
 
-		private void makeHexWay(Cell cell) {
+		private void HexSolver(Cell cell) {
 			int r = cell.r;
 			int c = cell.c;
 			ArrayList<Integer> directions = getAllHexDir();
@@ -55,12 +50,12 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 				visited[cell.r][cell.c] = true;
 				while (directions.size() != 0) {
 					if(cell != maze.exit){
-						randomDirection = getRandArray(directions.toArray(new Integer[directions.size()]));
+						randomDirection = getRandomArray(directions.toArray(new Integer[directions.size()]));
 						if (isInHex(r + Maze.deltaR[randomDirection], c + Maze.deltaC[randomDirection])
 								&& !visited[r + Maze.deltaR[randomDirection]][c	+ Maze.deltaC[randomDirection]]
 										&& !cell.wall[randomDirection].present) {
 							cell.wall[randomDirection].present = false;
-							makeHexWay(cell.neigh[randomDirection]);
+							HexSolver(cell.neigh[randomDirection]);
 							if(isSolved){
 								maze.drawFtPrt(cell);
 								cellsExplored++;
@@ -85,7 +80,7 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 		}
 
 
-		private void makeTunnelWay(Cell cell) {
+		private void TunnelSolver(Cell cell) {
 			int r = cell.r;
 			int c = cell.c;
 			ArrayList<Integer> directions = getAllDirs();
@@ -93,18 +88,18 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 			try {
 				Integer randomDirection;
 				visited[cell.r][cell.c] = true;
-				if(null != map[cell.r][cell.c].tunnelTo){
-					cell.tunnelTo = map[cell.r][cell.c].tunnelTo;
+				if(null != Map[cell.r][cell.c].tunnelTo){
+					cell.tunnelTo = Map[cell.r][cell.c].tunnelTo;
 					visited[cell.tunnelTo.r][cell.tunnelTo.c] = true;
 				}
 				while (directions.size() != 0) {
 					if(cell != maze.exit){
-						randomDirection = getRandArray(directions.toArray(new Integer[directions.size()]));
+						randomDirection = getRandomArray(directions.toArray(new Integer[directions.size()]));
 						if (isIn(r + Maze.deltaR[randomDirection], c	+ Maze.deltaC[randomDirection])
 								&& !visited[r + Maze.deltaR[randomDirection]][c	+ Maze.deltaC[randomDirection]] 
 										&& !cell.wall[randomDirection].present) {
 							cell.wall[randomDirection].present = false;
-							makeTunnelWay(cell.neigh[randomDirection]);
+							TunnelSolver(cell.neigh[randomDirection]);
 							if(isSolved){
 								maze.drawFtPrt(cell);
 								cellsExplored++;
@@ -124,7 +119,7 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 			}
 		}
 
-		private void makeRectWay(Cell cell) {
+		private void RectangleSolver(Cell cell) {
 			int r = cell.r;
 			int c = cell.c;
 			ArrayList<Integer> directions = getAllDirs();
@@ -134,11 +129,11 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 				visited[cell.r][cell.c] = true;
 				while (directions.size() != 0) {
 					if(cell != maze.exit){
-						randomDirection = getRandArray(directions.toArray(new Integer[directions.size()]));
+						randomDirection = getRandomArray(directions.toArray(new Integer[directions.size()]));
 						if (isIn(r + Maze.deltaR[randomDirection], c	+ Maze.deltaC[randomDirection])
 								&& !visited[r + Maze.deltaR[randomDirection]][c	+ Maze.deltaC[randomDirection]] 
 										&& !cell.wall[randomDirection].present) {
-							makeRectWay(cell.neigh[randomDirection]);
+							RectangleSolver(cell.neigh[randomDirection]);
 							if(isSolved){
 								maze.drawFtPrt(cell);
 								cellsExplored++;
