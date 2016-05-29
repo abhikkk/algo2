@@ -8,19 +8,15 @@ import maze.Cell;
 import maze.Maze;
 import maze.Wall;
 
+/**
+ * Base class for maze generators
+ * 
+ */
 public class Mazinator {
 
 	protected int width;
 	protected int height;
 	protected Maze maze;
-	public final static int EAST = 0;
-	public final static int NORTHEAST = 1;
-	public final static int NORTHWEST = 2;
-	public final static int NORTH = 2;
-	public final static int WEST = 3;
-	public final static int SOUTHWEST = 4;
-	public final static int SOUTHEAST = 5;
-	public final static int SOUTH = 5;
 	
 	protected int visitedCellCount;
 	protected List<Cell> visitedList = new ArrayList<Cell>();
@@ -55,7 +51,8 @@ public class Mazinator {
 		Cell newcell;
 		int rIndex = (int) Math.round(Math.random() * ((this.height - 1) - 0));
 		int cIndex;
-		if(this.maze.type == maze.HEX) {
+
+		if(this.maze.type == Maze.HEX) {
 			int cMax = (int) (width - 1 + Math.ceil((double)rIndex/2));
 			int cMin = (int) Math.ceil((double)rIndex/2);
 			cIndex = (int) Math.round(Math.random() * (cMax - cMin) + cMin);
