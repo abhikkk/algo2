@@ -24,7 +24,19 @@ public class RecursiveBacktrackerGenerator extends Mazinator implements MazeGene
 	 * ------------------------------------------------------------------
 	 * Kick off maze generation
 	 * 
+	 * 
+	 *  * Mark the current cell as 'Visited'
+     * If the current cell has any neighbours which have not been visited
+     * Choose randomly one of the unvisited neighbours
+     * add the current cell to the stack
+     * remove the wall between the current cell and the chosen cell
+     * Make the chosen cell the current cell
+     * Recursively call this function
+     * else
+     * remove the last current cell from the stack
+     * Backtrack to the previous execution of this function
 	 */
+	
 	public void generateMaze(Maze maze) {
 		super.generateMaze(maze);
 
