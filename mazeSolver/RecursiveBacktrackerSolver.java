@@ -87,8 +87,9 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 		if (x,y is goal) return true
 		mark x,y as part of solution path
 		if (FIND-PATH(North of x,y) == false)
-		Go to neighbour.
+		Go to neighbor.
 		#While(Till the direction is !=0 )
+		Uses the formula (C+1)/2+C-1 for Upright and (C+1)/2+C for Upleft.
 	  	pickNeighbour()
 		return true
 		unmark x,y apart of solution path
@@ -135,7 +136,21 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 			return r >= 0 && r < maze.sizeR && c >= (r + 1) / 2 && c < maze.sizeC + (r + 1) / 2;
 		}
 
+		/**FIND-PATH(x, y)
 
+		if (x,y outside maze) return false
+		if (x,y is goal) return true
+		mark x,y as part of solution path
+		if x,y has a tunnel, goes to the tunnel exit points and repeats the process.
+		if (FIND-PATH(North of x,y) == false)
+		Go to neighbor.
+		#While(Till the direction is !=0 )
+	  	pickNeighbour()
+		return true
+		unmark x,y apart of solution path
+		return false
+		++ no of cells explored
+		**/
 		private void TunnelSolver(Cell cell) {
 			int r = cell.r;
 			int c = cell.c;
@@ -175,6 +190,21 @@ public class RecursiveBacktrackerSolver extends Solvinator implements MazeSolver
 			}
 		}
 
+		/**FIND-PATH(x, y)
+
+		if (x,y outside maze) return false
+		if (x,y is goal) return true
+		mark x,y as part of solution path
+		if (FIND-PATH(North of x,y) == false)
+		Go to neighbor.
+		#While(Till the direction is !=0 )
+	  	pickNeighbour()
+		return true
+		unmark x,y apart of solution path
+		return false
+		++ no of cells explored
+		**/
+		
 		private void RectangleSolver(Cell cell) {
 			int r = cell.r;
 			int c = cell.c;
